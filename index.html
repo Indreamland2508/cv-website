@@ -1,112 +1,355 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chúc Mừng Sinh Nhật!</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Thiệp Sinh Nhật Tự Động</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { display: flex; height: 100vh; background: #fff0f5; overflow: hidden; }
-        
-        /* Sidebar tự động / có thể thu gọn */
-        .sidebar {
-            width: 280px;
-            background: #ff477e;
-            color: white;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            transition: all 0.3s ease;
-            box-shadow: 4px 0 15px rgba(0,0,0,0.1);
+        :root {
+            --rose-1: #fff1f7;
+            --rose-2: #ffd6e7;
+            --rose-3: #ff9ec2;
+            --rose-4: #ff5c9a;
+            --rose-5: #d81b60;
+            --gold: #ffd166;
+            --text: #5e2a47;
+            --white: #ffffff;
+            --shadow: rgba(138, 46, 86, 0.2);
         }
-        .sidebar h2 { font-size: 1.5rem; margin-bottom: 20px; }
-        .menu-list { list-style: none; }
-        .menu-list li {
-            padding: 12px 15px;
-            margin: 8px 0;
-            background: rgba(255,255,255,0.2);
-            border-radius: 8px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .menu-list li:hover { background: rgba(255,255,255,0.4); }
 
-        /* Nội dung chính */
-        .main-content {
-            flex: 1;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        html, body {
+            width: 100%;
+            min-height: 100%;
+        }
+
+        body {
+            display: grid;
+            place-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #fff7fb 0%, #ffe7f1 35%, #ffd7ea 100%);
+            color: var(--text);
+            overflow: hidden;
+        }
+
+        .card {
+            position: relative;
+            width: min(1100px, 92vw);
+            height: min(760px, 90vh);
+            border-radius: 32px;
+            overflow: hidden;
+            background: rgba(255,255,255,0.28);
+            border: 1px solid rgba(255,255,255,0.6);
+            box-shadow: 0 30px 80px var(--shadow);
+            backdrop-filter: blur(4px);
+        }
+
+        .screen {
+            position: absolute;
+            inset: 0;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 40px;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transform: translateY(30px) scale(0.98);
+            transition: opacity 1s ease, transform 1s ease, visibility 1s ease;
+            padding: 42px;
+        }
+
+        .screen.active {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            transform: translateY(0) scale(1);
+        }
+
+        .screen-1 {
+            background: radial-gradient(circle at top, rgba(255,255,255,0.8), rgba(255, 219, 235, 0.9) 45%, rgba(255, 184, 215, 0.96) 100%);
+        }
+
+        .screen-2 {
+            background: linear-gradient(135deg, rgba(255,255,255,0.75), rgba(255, 228, 243, 0.9));
+        }
+
+        .screen-3 {
+            background: linear-gradient(135deg, #fff5d5 0%, #ffe0ef 36%, #ffd5ec 100%);
+        }
+
+        .content-box {
+            width: min(760px, 100%);
             text-align: center;
+            position: relative;
+            z-index: 1;
         }
-        h1 { color: #d90429; font-size: 3rem; margin-bottom: 20px; }
-        p { color: #555; font-size: 1.2rem; max-width: 600px; line-height: 1.6; }
-        
-        /* Nút tự động kích hoạt hiệu ứng */
-        .btn {
-            margin-top: 30px;
-            padding: 12px 25px;
-            background: #ff477e;
-            color: white;
-            border: none;
-            border-radius: 25px;
-            font-size: 1rem;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(255, 71, 126, 0.4);
+
+        .badge {
+            display: inline-block;
+            margin-bottom: 18px;
+            padding: 10px 22px;
+            background: rgba(255,255,255,0.45);
+            border: 1px solid rgba(255,255,255,0.8);
+            border-radius: 999px;
+            color: var(--rose-5);
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            font-size: 0.72rem;
         }
-        .btn:hover { background: #d90429; }
+
+        .date-text {
+            font-size: clamp(2rem, 4vw, 4rem);
+            line-height: 1.1;
+            font-weight: 800;
+            color: var(--rose-5);
+            text-shadow: 0 8px 18px rgba(216, 27, 96, 0.12);
+        }
+
+        .date-sub {
+            margin-top: 16px;
+            font-size: clamp(1rem, 1.8vw, 1.4rem);
+            color: rgba(94, 42, 71, 0.82);
+            font-weight: 500;
+        }
+
+        .balloons {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+        }
+
+        .balloons span {
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            box-shadow: inset -6px -6px 10px rgba(255,255,255,0.35);
+            animation: floatUp 7s ease-in-out infinite;
+        }
+
+        .balloons span:nth-child(1) { left: 12%; top: 10%; background: #ff7aa4; }
+        .balloons span:nth-child(2) { left: 22%; top: 16%; background: #ffd166; animation-delay: 0.7s; }
+        .balloons span:nth-child(3) { left: 82%; top: 12%; background: #ff9ec2; animation-delay: 1.2s; }
+        .balloons span:nth-child(4) { left: 70%; top: 18%; background: #ffd166; animation-delay: 1.8s; }
+        .balloons span:nth-child(5) { left: 48%; top: 8%; background: #ff7aa4; animation-delay: 2.1s; }
+        .balloons span:nth-child(6) { left: 58%; top: 15%; background: #ffc4d6; animation-delay: 2.8s; }
+
+        @keyframes floatUp {
+            0%, 100% { transform: translateY(0) scale(1); opacity: 0.8; }
+            50% { transform: translateY(-16px) scale(1.08); opacity: 1; }
+        }
+
+        .gallery {
+            width: min(900px, 100%);
+            display: grid;
+            grid-template-columns: repeat(3, minmax(180px, 1fr));
+            gap: 20px;
+            margin-top: 22px;
+        }
+
+        .photo-card {
+            background: rgba(255,255,255,0.65);
+            border: 1px solid rgba(255,255,255,0.75);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 18px 36px rgba(119, 35, 77, 0.12);
+            transform: translateY(0);
+            transition: transform 0.6s ease;
+        }
+
+        .screen-2 .photo-card:hover {
+            transform: translateY(-8px);
+        }
+
+        .photo-card img {
+            display: block;
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+        }
+
+        .caption {
+            padding: 14px 16px 18px;
+            font-weight: 600;
+            color: var(--text);
+            background: rgba(255,255,255,0.3);
+        }
+
+        .wish-box {
+            margin-top: 26px;
+            padding: 20px 26px;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.6);
+            border: 1px solid rgba(255,255,255,0.7);
+            box-shadow: 0 12px 36px rgba(255, 99, 156, 0.12);
+        }
+
+        .wish-box p {
+            font-size: clamp(1rem, 1.5vw, 1.2rem);
+            line-height: 1.8;
+            color: #6d3a57;
+        }
+
+        .screen-3 .letter {
+            width: min(760px, 100%);
+            background: rgba(255,255,255,0.58);
+            border: 1px solid rgba(255,255,255,0.8);
+            border-radius: 30px;
+            padding: clamp(24px, 4vw, 48px);
+            box-shadow: 0 20px 50px rgba(196, 77, 127, 0.12);
+        }
+
+        .eyebrow {
+            display: inline-block;
+            margin-bottom: 14px;
+            padding: 8px 16px;
+            border-radius: 999px;
+            background: rgba(255, 209, 102, 0.28);
+            color: #8f5b00;
+            font-size: 0.72rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .letter h2 {
+            font-size: clamp(2rem, 4vw, 3.2rem);
+            color: var(--rose-5);
+            margin-bottom: 16px;
+        }
+
+        .letter p {
+            font-size: clamp(1rem, 1.7vw, 1.2rem);
+            line-height: 1.9;
+            color: #5f3552;
+            margin-bottom: 12px;
+        }
+
+        .signature {
+            margin-top: 22px;
+            font-weight: 700;
+            color: var(--rose-5);
+            letter-spacing: 0.06em;
+        }
+
+        @media (max-width: 760px) {
+            .card {
+                width: 94vw;
+                height: 92vh;
+            }
+
+            .screen {
+                padding: 22px;
+            }
+
+            .gallery {
+                grid-template-columns: 1fr;
+            }
+
+            .photo-card img {
+                height: 220px;
+            }
+        }
     </style>
 </head>
 <body>
+    <div class="card">
+        <section class="screen screen-1 active" id="screen-1">
+            <div class="content-box">
+                <div class="balloons">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <div class="badge">Birthday surprise</div>
+                <div class="date-text" id="today-date">Hôm nay là ngày...</div>
+                <div class="date-sub">Một ngày đặc biệt, một niềm vui lớn đang chờ bạn mở ra.</div>
+            </div>
+        </section>
 
-    <!-- Sidebar tự động hiển thị các mục lời chúc -->
-    <div class="sidebar" id="sidebar">
-        <div>
-            <h2>🎉 Menu Sinh Nhật</h2>
-            <ul class="menu-list">
-                <li onclick="changeMessage(1)">Lời chúc từ Trái Tim 💖</li>
-                <li onclick="changeMessage(2)">Kỷ niệm đáng nhớ 📸</li>
-                <li onclick="changeMessage(3)">Điều ước tuổi mới 🌟</li>
-            </ul>
-        </div>
-        <div style="font-size: 0.9rem; opacity: 0.8;">Made with love ❤️</div>
-    </div>
+        <section class="screen screen-2" id="screen-2">
+            <div class="content-box">
+                <div class="badge">Những khoảnh khắc đẹp</div>
+                <div class="gallery">
+                    <div class="photo-card">
+                        <img src="pin.jpg" alt="Hình ảnh 1" />
+                        <div class="caption">Tặng bạn nụ cười</div>
+                    </div>
+                    <div class="photo-card">
+                        <img src="pin.jpg" alt="Hình ảnh 2" />
+                        <div class="caption">Tặng bạn niềm vui</div>
+                    </div>
+                    <div class="photo-card">
+                        <img src="pin.jpg" alt="Hình ảnh 3" />
+                        <div class="caption">Tặng bạn hạnh phúc</div>
+                    </div>
+                </div>
+                <div class="wish-box">
+                    <p>
+                        Chúc bạn sinh nhật tràn ngập tiếng cười, có thật nhiều điều may mắn, yêu thương và những khoảnh khắc đáng nhớ.
+                        Mong mọi ước mơ của bạn luôn được thắp sáng và thành hiện thực trong ngày mới.
+                    </p>
+                </div>
+            </div>
+        </section>
 
-    <!-- Phần hiển thị chính -->
-    <div class="main-content">
-        <h1 id="title-text">Chúc Mừng Sinh Nhật Bạn Nhé!</h1>
-        <p id="desc-text">Chúc bạn có một ngày sinh nhật ngập tràn niềm vui, hạnh phúc bên gia đình và đạt được mọi dự định trong tuổi mới!</p>
-        <button class="btn" onclick="autoAnimate()">Bất ngờ chưa? 🎁</button>
+        <section class="screen screen-3" id="screen-3">
+            <div class="letter">
+                <div class="eyebrow">Thư gửi bạn</div>
+                <h2>Chúc mừng sinh nhật!</h2>
+                <p>
+                    Hôm nay là một ngày rất đặc biệt, không chỉ vì là ngày bạn ra đời mà còn vì bạn đã mang đến cho những người xung quanh một nguồn năng lượng tuyệt vời, dịu dàng và đầy cảm hứng.
+                </p>
+                <p>
+                    Mong rằng trong năm mới, bạn sẽ luôn khỏe mạnh, bình an, được yêu thương và hạnh phúc. Dù đường đi có khó khăn, hãy tin rằng mọi điều tốt đẹp đều đang chờ bạn ở phía trước.
+                </p>
+                <p>
+                    Chúc bạn luôn giữ được niềm tin, giữ được sự yêu đời và luôn biết cách trân trọng những điều nhỏ bé nhưng đẹp nhất trong cuộc sống.
+                </p>
+                <p class="signature">Với tất cả tình cảm và lời chúc tốt đẹp nhất ❤️</p>
+            </div>
+        </section>
     </div>
 
     <script>
-        // Mảng chứa các nội dung thay đổi tự động khi bấm vào sidebar
-        const contentData = {
-            1: { title: "Tuổi mới rực rỡ!", desc: "Chúc mọi điều may mắn, nụ cười luôn nở trên môi và luôn kiên định với con đường mình đã chọn." },
-            2: { title: "Những kỷ niệm đẹp", desc: "Cảm ơn vì đã đồng hành qua nhiều khoảnh khắc tuyệt vời. Chúc tình bạn/tình yêu của chúng ta mãi bền chặt." },
-            3: { title: "Ngôi sao hy vọng", desc: "Hãy thổi nến và ước những điều tốt đẹp nhất nhé, mọi ước mơ ở tuổi mới sẽ thành hiện thực!" }
-        };
+        const screen1 = document.getElementById('screen-1');
+        const screen2 = document.getElementById('screen-2');
+        const screen3 = document.getElementById('screen-3');
+        const screens = [screen1, screen2, screen3];
 
-        function changeMessage(id) {
-            document.getElementById("title-text").innerText = contentData[id].title;
-            document.getElementById("desc-text").innerText = contentData[id].desc;
+        function setActiveScreen(index) {
+            screens.forEach((screen, i) => {
+                screen.classList.toggle('active', i === index);
+            });
         }
 
-        // Tự động chuyển đổi lời chúc sau mỗi 5 giây như một dạng slide tự động
-        let currentIdx = 1;
-        function autoAnimate() {
-            currentIdx = currentIdx > 3 ? 1 : currentIdx;
-            changeMessage(currentIdx);
-            currentIdx++;
+        function formatToday() {
+            const today = new Date();
+            const day = today.getDate();
+            const month = today.getMonth() + 1;
+            const year = today.getFullYear();
+            const weekDays = ['Chủ Nhật', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy'];
+            const dayName = weekDays[today.getDay()];
+
+            return `${dayName}, ${day}/${month}/${year}`;
         }
-        
-        // Tự động chạy đổi lời chúc khi vừa mở trang sau 4 giây
-        setInterval(() => {
-            autoAnimate();
-        }, 5000);
+
+        document.getElementById('today-date').textContent = `Hôm nay là ngày ${formatToday()}`;
+
+        setActiveScreen(0);
+
+        setTimeout(() => setActiveScreen(1), 2800);
+        setTimeout(() => setActiveScreen(2), 7600);
     </script>
 </body>
 </html>
