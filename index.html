@@ -3,332 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BMS AI Dashboard | Quản lý Sức khỏe Pin</title>
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230ea5e9' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='2' y='7' width='16' height='10' rx='2' ry='2'></rect><line x1='22' y1='11' x2='22' y2='13'></line><polygon points='11 7 8 12 11 12 9 17 14 12 11 12 14 7'></polygon></svg>">
+    <title>Chúc Mừng Sinh Nhật!</title>
     <style>
-        /* Bảng màu High-Tech Dark Mode */
-        :root {
-            --bg-dark: #070b19;
-            --card-bg: rgba(16, 23, 42, 0.75);
-            --border-glow: #0ea5e9;
-            --text-main: #e2e8f0;
-            --text-muted: #94a3b8;
-            --input-bg: rgba(2, 6, 23, 0.8);
-            
-            /* Màu Neon Cảnh báo */
-            --neon-safe: #10b981;
-            --neon-warning: #f59e0b;
-            --neon-danger: #ef4444;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            /* Tạo nền lưới Grid công nghệ */
-            background-color: var(--bg-dark);
-            background-image: 
-                linear-gradient(rgba(14, 165, 233, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(14, 165, 233, 0.05) 1px, transparent 1px);
-            background-size: 30px 30px;
-            color: var(--text-main);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { display: flex; height: 100vh; background: #fff0f5; overflow: hidden; }
+        
+        /* Sidebar tự động / có thể thu gọn */
+        .sidebar {
+            width: 280px;
+            background: #ff477e;
+            color: white;
             padding: 20px;
-            box-sizing: border-box;
-        }
-
-        .dashboard-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            width: 100%;
-            max-width: 480px;
-            padding: 40px 35px;
-            border-radius: 16px;
-            border: 1px solid rgba(14, 165, 233, 0.2);
-            box-shadow: 0 0 30px rgba(14, 165, 233, 0.1),
-                        inset 0 0 20px rgba(14, 165, 233, 0.05);
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 35px;
-            position: relative;
-        }
-
-        .header h2 {
-            margin: 0;
-            font-size: 26px;
-            font-weight: 700;
-            color: #fff;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            text-shadow: 0 0 10px rgba(14, 165, 233, 0.5);
-        }
-
-        .header p {
-            margin: 8px 0 0;
-            font-size: 13px;
-            color: var(--border-glow);
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-
-        .input-group {
-            margin-bottom: 22px;
-        }
-
-        .input-group label {
-            display: block;
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .input-group input {
-            width: 100%;
-            padding: 14px 15px;
-            border: 1px solid rgba(14, 165, 233, 0.3);
-            border-radius: 8px;
-            font-size: 16px;
-            color: #fff;
-            background-color: var(--input-bg);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
             transition: all 0.3s ease;
-            box-sizing: border-box;
-            font-family: 'Courier New', Courier, monospace; /* Font số kỹ thuật */
+            box-shadow: 4px 0 15px rgba(0,0,0,0.1);
         }
-
-        .input-group input:focus {
-            outline: none;
-            border-color: var(--border-glow);
-            box-shadow: 0 0 15px rgba(14, 165, 233, 0.4);
+        .sidebar h2 { font-size: 1.5rem; margin-bottom: 20px; }
+        .menu-list { list-style: none; }
+        .menu-list li {
+            padding: 12px 15px;
+            margin: 8px 0;
+            background: rgba(255,255,255,0.2);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.2s;
         }
+        .menu-list li:hover { background: rgba(255,255,255,0.4); }
 
-        .btn-submit {
-            width: 100%;
-            padding: 16px;
-            background: linear-gradient(45deg, #0284c7, #3b82f6);
+        /* Nội dung chính */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            text-align: center;
+        }
+        h1 { color: #d90429; font-size: 3rem; margin-bottom: 20px; }
+        p { color: #555; font-size: 1.2rem; max-width: 600px; line-height: 1.6; }
+        
+        /* Nút tự động kích hoạt hiệu ứng */
+        .btn {
+            margin-top: 30px;
+            padding: 12px 25px;
+            background: #ff477e;
             color: white;
             border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            border-radius: 25px;
+            font-size: 1rem;
             cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 15px;
-            box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+            box-shadow: 0 4px 10px rgba(255, 71, 126, 0.4);
         }
-
-        .btn-submit:hover {
-            box-shadow: 0 0 30px rgba(59, 130, 246, 0.6);
-            transform: translateY(-2px);
-        }
-
-        .btn-submit:disabled {
-            background: #334155;
-            box-shadow: none;
-            color: #94a3b8;
-            cursor: not-allowed;
-            transform: translateY(0);
-        }
-
-        /* Khu vực kết quả */
-        .result-container {
-            margin-top: 35px;
-            padding-top: 25px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            display: none;
-            text-align: center;
-        }
-
-        .soh-value {
-            font-size: 56px;
-            font-weight: 900;
-            margin: 15px 0;
-            font-family: 'Courier New', Courier, monospace; /* Font điện tử */
-            line-height: 1;
-        }
-
-        .status-badge {
-            display: inline-block;
-            padding: 6px 20px;
-            border-radius: 4px;
-            font-size: 13px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            border: 1px solid transparent;
-        }
-
-        /* Thanh tiến trình Neon */
-        .progress-bg {
-            width: 100%;
-            height: 8px;
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            margin-top: 25px;
-            overflow: hidden;
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
-        }
-
-        .progress-fill {
-            height: 100%;
-            width: 0%;
-            border-radius: 10px;
-            transition: width 1.5s cubic-bezier(0.2, 0.8, 0.2, 1), background-color 0.5s ease;
-        }
-
-        /* --- THEME SAFE (XANH NEON) --- */
-        .theme-safe .soh-value { 
-            color: #34d399; 
-            text-shadow: 0 0 20px rgba(16, 185, 129, 0.6); 
-        }
-        .theme-safe .status-badge { 
-            background-color: rgba(16, 185, 129, 0.1); 
-            color: #34d399; 
-            border-color: rgba(16, 185, 129, 0.5);
-            box-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
-        }
-        .theme-safe .progress-fill { 
-            background-color: #34d399; 
-            box-shadow: 0 0 10px #34d399;
-        }
-
-        /* --- THEME WARNING (VÀNG NEON) --- */
-        .theme-warning .soh-value { 
-            color: #fbbf24; 
-            text-shadow: 0 0 20px rgba(245, 158, 11, 0.6); 
-        }
-        .theme-warning .status-badge { 
-            background-color: rgba(245, 158, 11, 0.1); 
-            color: #fbbf24; 
-            border-color: rgba(245, 158, 11, 0.5);
-            box-shadow: 0 0 15px rgba(245, 158, 11, 0.2);
-        }
-        .theme-warning .progress-fill { 
-            background-color: #fbbf24; 
-            box-shadow: 0 0 10px #fbbf24;
-        }
-
-        /* --- THEME DANGER (ĐỎ NEON) --- */
-        .theme-danger .soh-value { 
-            color: #f87171; 
-            text-shadow: 0 0 20px rgba(239, 68, 68, 0.6); 
-        }
-        .theme-danger .status-badge { 
-            background-color: rgba(239, 68, 68, 0.1); 
-            color: #f87171; 
-            border-color: rgba(239, 68, 68, 0.5);
-            box-shadow: 0 0 15px rgba(239, 68, 68, 0.2);
-        }
-        .theme-danger .progress-fill { 
-            background-color: #f87171; 
-            box-shadow: 0 0 10px #f87171;
-        }
+        .btn:hover { background: #d90429; }
     </style>
 </head>
 <body>
 
-    <div class="dashboard-card">
-        <div class="header">
-            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 10px rgba(14, 165, 233, 0.8)); margin-bottom: 15px;">
-                <rect x="2" y="7" width="16" height="10" rx="2" ry="2"></rect>
-                <line x1="22" y1="11" x2="22" y2="13"></line>
-                <polygon points="11 7 8 12 11 12 9 17 14 12 11 12 14 7" fill="rgba(14, 165, 233, 0.2)"></polygon>
-            </svg>
-            
-            <h2>Quản lý Sức khỏe Pin</h2>
-            <p>Hệ thống AI - Random Forest</p>
+    <!-- Sidebar tự động hiển thị các mục lời chúc -->
+    <div class="sidebar" id="sidebar">
+        <div>
+            <h2>🎉 Menu Sinh Nhật</h2>
+            <ul class="menu-list">
+                <li onclick="changeMessage(1)">Lời chúc từ Trái Tim 💖</li>
+                <li onclick="changeMessage(2)">Kỷ niệm đáng nhớ 📸</li>
+                <li onclick="changeMessage(3)">Điều ước tuổi mới 🌟</li>
+            </ul>
         </div>
+        <div style="font-size: 0.9rem; opacity: 0.8;">Made with love ❤️</div>
+    </div>
 
-        <div class="input-group">
-            <label for="cycle">Số chu kỳ vận hành (Cycle)</label>
-            <input type="number" id="cycle" value="120" min="1">
-        </div>
-
-        <div class="input-group">
-            <label for="temp">Nhiệt độ môi trường (°C)</label>
-            <input type="number" id="temp" value="35.0" step="0.1">
-        </div>
-
-        <div class="input-group">
-            <label for="gradient">Độ dốc nhiệt độ (°C/chu kỳ)</label>
-            <input type="number" id="gradient" value="1.5" step="0.1">
-        </div>
-
-        <button id="submitBtn" class="btn-submit" onclick="predictSOH()">Khởi động quét AI</button>
-
-        <div id="resultBox" class="result-container">
-            <div id="statusBadge" class="status-badge">SYSTEM STANDBY</div>
-            <div id="sohValue" class="soh-value">--%</div>
-            
-            <div class="progress-bg">
-                <div id="progressFill" class="progress-fill"></div>
-            </div>
-            <p style="font-size: 12px; color: var(--text-muted); margin-top: 15px; letter-spacing: 0.5px;">*Tỷ lệ SOH so với thiết kế xuất xưởng của NASA</p>
-        </div>
+    <!-- Phần hiển thị chính -->
+    <div class="main-content">
+        <h1 id="title-text">Chúc Mừng Sinh Nhật Bạn Nhé!</h1>
+        <p id="desc-text">Chúc bạn có một ngày sinh nhật ngập tràn niềm vui, hạnh phúc bên gia đình và đạt được mọi dự định trong tuổi mới!</p>
+        <button class="btn" onclick="autoAnimate()">Bất ngờ chưa? 🎁</button>
     </div>
 
     <script>
-        // DÁN LẠI ĐƯỜNG LINK RENDER CỦA BẠN VÀO ĐÂY:
-        const API_URL = 'https://rul-soh-predictions.onrender.com/predict';
+        // Mảng chứa các nội dung thay đổi tự động khi bấm vào sidebar
+        const contentData = {
+            1: { title: "Tuổi mới rực rỡ!", desc: "Chúc mọi điều may mắn, nụ cười luôn nở trên môi và luôn kiên định với con đường mình đã chọn." },
+            2: { title: "Những kỷ niệm đẹp", desc: "Cảm ơn vì đã đồng hành qua nhiều khoảnh khắc tuyệt vời. Chúc tình bạn/tình yêu của chúng ta mãi bền chặt." },
+            3: { title: "Ngôi sao hy vọng", desc: "Hãy thổi nến và ước những điều tốt đẹp nhất nhé, mọi ước mơ ở tuổi mới sẽ thành hiện thực!" }
+        };
 
-        async function predictSOH() {
-            const btn = document.getElementById('submitBtn');
-            const resultBox = document.getElementById('resultBox');
-            
-            const payload = {
-                cycle: document.getElementById('cycle').value,
-                temp: document.getElementById('temp').value,
-                gradient: document.getElementById('gradient').value
-            };
-
-            btn.disabled = true;
-            btn.innerText = "ĐANG PHÂN TÍCH DỮ LIỆU...";
-
-            try {
-                const response = await fetch(API_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                
-                const data = await response.json();
-                
-                if(data.success) {
-                    resultBox.style.display = 'block';
-                    
-                    const soh = data.soh_value;
-                    document.getElementById('sohValue').innerText = soh + "%";
-                    document.getElementById('statusBadge').innerText = "Trạng thái: " + data.status;
-                    
-                    document.getElementById('progressFill').style.width = soh + "%";
-
-                    resultBox.className = "result-container"; 
-                    if (data.status === "AN TOÀN") {
-                        resultBox.classList.add("theme-safe");
-                    } else if (data.status === "CẢNH BÁO") {
-                        resultBox.classList.add("theme-warning");
-                    } else {
-                        resultBox.classList.add("theme-danger");
-                    }
-                } else {
-                    alert("LỖI HỆ THỐNG: " + data.error);
-                }
-            } catch (error) {
-                alert("Mất kết nối với máy chủ AI. Vui lòng thử lại!");
-            } finally {
-                btn.disabled = false;
-                btn.innerText = "Khởi động quét AI";
-            }
+        function changeMessage(id) {
+            document.getElementById("title-text").innerText = contentData[id].title;
+            document.getElementById("desc-text").innerText = contentData[id].desc;
         }
+
+        // Tự động chuyển đổi lời chúc sau mỗi 5 giây như một dạng slide tự động
+        let currentIdx = 1;
+        function autoAnimate() {
+            currentIdx = currentIdx > 3 ? 1 : currentIdx;
+            changeMessage(currentIdx);
+            currentIdx++;
+        }
+        
+        // Tự động chạy đổi lời chúc khi vừa mở trang sau 4 giây
+        setInterval(() => {
+            autoAnimate();
+        }, 5000);
     </script>
 </body>
 </html>
